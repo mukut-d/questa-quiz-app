@@ -1,0 +1,33 @@
+# Target - Build and deploy a simple fullstack app 
+
+Stack Requirements -
+1 - Firebase Authentication 
+2 - Styling - Tailwind
+3 - Mongodb
+4 - Deployment - Vercel (for nextjs)
+
+# Features 
+1 - Firebase Authentication - Google Authentication
+
+2 - Public users can only view and respond to shared quizzes
+
+Core Features
+
+1 Login/ Signup
+2 Auth State persists between refreshers 
+(React persist)
+3 Show login/ logout options in the UI
+
+2 Quiz Creation (Authenticated Only)
+Add quiz title with 2 questions 
+1 single choice (radio button)
+1 short ans type
+save button to save quiz questions in the db 
+
+3 public qoute /quiz/[id]
+Home page View the quiz
+Submit answer 
+Save answers in the database.
+
+View Submissions
+# Logged in user can see response analysis, with timestamp and answers
