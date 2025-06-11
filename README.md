@@ -28,15 +28,15 @@ Build and deploy a secure, full-featured quiz platform that demonstrates foundat
 
 ## 🛠 Tech Stack
 
-| Category   | Stack                      |
-| ---------- | -------------------------- |
-| Framework  | Next.js 15 (App Router)    |
-| Language   | TypeScript                 |
-| Styling    | Tailwind CSS v4, shadcn/ui |
-| Database   | PostgreSQL (via Supabase)  |
-| ORM        | Prisma                     |
-| Auth       | BetterAuth / Supabase Auth |
-| Deployment | Vercel                     |
+| Category   | Stack                   |
+| ---------- | ----------------------- |
+| Framework  | Next.js 15 (App Router) |
+| Language   | Javascript              |
+| Styling    | Tailwind CSS v4         |
+| Database   | Mongodb                 |
+| ORM        | Prisma                  |
+| Auth       | Firebase                |
+| Deployment | Vercel                  |
 
 ---
 
@@ -95,4 +95,6 @@ Build and deploy a secure, full-featured quiz platform that demonstrates foundat
    ```bash
    git clone https://github.com/yourusername/questa.git
    cd questa
+   npm install
+   npm run dev
    ```
