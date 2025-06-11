@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📚 Questa – Quiz Creation & Sharing Platform
 
-## Getting Started
+Questa is a fullstack quiz application that enables authenticated users to create, manage, and share quizzes publicly. Anyone with the link can respond to a quiz without authentication, while creators can view and analyze submissions securely.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Objective
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and deploy a secure, full-featured quiz platform that demonstrates foundational fullstack skills including:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- API development
+- Authentication
+- Database integration
+- Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Live Demo
 
-To learn more about Next.js, take a look at the following resources:
+🔗 [Visit Live App](https://your-live-link.vercel.app)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> 🧪 Use these sample credentials to test:
+>
+> - Email: `demo@questa.com`
+> - Password: `questa123`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🛠 Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Category   | Stack                      |
+| ---------- | -------------------------- |
+| Framework  | Next.js 15 (App Router)    |
+| Language   | TypeScript                 |
+| Styling    | Tailwind CSS v4, shadcn/ui |
+| Database   | PostgreSQL (via Supabase)  |
+| ORM        | Prisma                     |
+| Auth       | BetterAuth / Supabase Auth |
+| Deployment | Vercel                     |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🔐 Authentication
+
+- Email-based signup & login
+- Persistent sessions
+- UI updates dynamically based on auth state
+- Only authenticated users can create or view their quizzes
+- Public users can view and respond to shared quizzes
+
+---
+
+## ⚙️ Core Features
+
+### ✅ Authenticated User Actions
+
+- Create a quiz with a title and at least 2 questions:
+  - Single-choice (radio buttons)
+  - Short text input
+- View quiz via generated public link
+- View all responses submitted to their quizzes
+
+### 🌍 Public User Actions
+
+- Access quizzes via `/quiz/[id]`
+- Submit responses without logging in
+- Answers are stored securely in the database
+
+---
+
+## 🧱 Backend API Endpoints
+
+| Route                      | Method | Description                             |
+| -------------------------- | ------ | --------------------------------------- |
+| `/api/quizzes`             | POST   | Create a new quiz                       |
+| `/api/quizzes/[id]`        | GET    | Fetch a public quiz                     |
+| `/api/quizzes/[id]/submit` | POST   | Submit a quiz response                  |
+| `/api/user/quizzes`        | GET    | Fetch quizzes created by logged-in user |
+| `/api/quiz/[id]/responses` | GET    | Get all responses for a quiz            |
+
+> Built using **Next.js Route Handlers (App Router)** and securely connected to PostgreSQL via Prisma.
+
+---
+
+## 🖥️ Screenshots
+
+<!-- Add screenshots here -->
+<!-- ![Homepage](./public/screenshots/homepage.png) -->
+
+---
+
+## 📦 Setup Instructions
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/yourusername/questa.git
+   cd questa
+   ```
