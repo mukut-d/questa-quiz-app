@@ -12,10 +12,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { toast } from "sonner";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { toast, Toaster } from "react-hot-toast";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { app } from "@/config/firebase.config";
 import Image from "next/image";
+import { validateUserJWTToken } from "@/utils/validateUser";
 
 export default function SignUpPage() {
   const firebaseAuth = getAuth(app);
@@ -41,6 +47,18 @@ export default function SignUpPage() {
     e.preventDefault();
     setIsLoading(true);
 
+    if (!formData.name) {
+      toast.error("Name is Required");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formData.email) {
+      toast.error("Email is Required");
+      setIsLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       setIsLoading(false);
@@ -53,28 +71,28 @@ export default function SignUpPage() {
       return;
     }
 
-    try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+    console.log(JSON.stringify(formData, null, 2));
 
-      if (response.ok) {
-        toast.success("Account created successfully!");
-        router.push("/auth/signin");
-      } else {
-        const data = await response.json();
-        toast.error(data.message || "Something went wrong");
-      }
+    try {
+      await createUserWithEmailAndPassword(
+        firebaseAuth,
+        formData?.email,
+        formData?.password
+      ).then((userCred) => {
+        firebaseAuth.onAuthStateChanged((cred) => {
+          if (cred) {
+            cred?.getIdToken().then((token) => {
+              console.log(token);
+              validateUserJWTToken(token).then((data) => {
+                console.log("data " + JSON.stringify(data, null, 2));
+              });
+            });
+          }
+        });
+      });
     } catch (error) {
       toast.error("Something went wrong");
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -86,13 +104,14 @@ export default function SignUpPage() {
         if (cred) {
           cred?.getIdToken().then((token) => {
             console.log(token);
+            validateUserJWTToken(token).then((data) => {
+              console.log("data " + JSON.stringify(data, null, 2));
+            });
           });
         }
       });
     });
   };
-
-  const loginWithEmailHandler = () => {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -112,7 +131,6 @@ export default function SignUpPage() {
                 placeholder="Full Name"
                 value={formData.name}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -122,7 +140,6 @@ export default function SignUpPage() {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -132,7 +149,6 @@ export default function SignUpPage() {
                 placeholder="Password (min 6 characters)"
                 value={formData.password}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -142,15 +158,9 @@ export default function SignUpPage() {
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                required
               />
             </div>
-            <Button
-              onClick={loginWithEmailHandler}
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
             <div className="flex justify-center">
@@ -183,6 +193,7 @@ export default function SignUpPage() {
           </div>
         </CardContent>
       </Card>
+      <Toaster />
     </div>
   );
 }

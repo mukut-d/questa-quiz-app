@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/providers/auth-provider";
 import { Toaster } from "sonner";
-import { SessionProvider } from "next-auth/react";
+import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <SessionProvider>{children}</SessionProvider>
+          <Providers>{children}</Providers>
         </AuthProvider>
         <Toaster />
       </body>

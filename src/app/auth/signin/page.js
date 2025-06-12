@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -13,10 +12,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { toast } from "sonner";
+import { toast, Toaster } from "react-hot-toast";
 import { app } from "@/config/firebase.config";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import Image from "next/image";
+import { validateUserJWTToken } from "@/utils/validateUser";
 
 export default function SignInPage() {
   const firebaseAuth = getAuth(app);
@@ -31,19 +36,30 @@ export default function SignInPage() {
     setIsLoading(true);
 
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        toast.error("Invalid credentials");
-      } else {
-        toast.success("Welcome back!");
-        router.push("/dashboard");
-        router.refresh();
+      if (!email) {
+        toast.error("Email is required");
+        return;
       }
+
+      if (!password) {
+        toast.error("Password is required");
+        return;
+      }
+
+      await signInWithEmailAndPassword(firebaseAuth, email, password).then(
+        (userCred) => {
+          firebaseAuth.onAuthStateChanged((cred) => {
+            if (cred) {
+              cred?.getIdToken().then((token) => {
+                console.log(token);
+                validateUserJWTToken(token).then((data) => {
+                  console.log("data " + JSON.stringify(data, null, 2));
+                });
+              });
+            }
+          });
+        }
+      );
     } catch (error) {
       toast.error("Something went wrong");
     } finally {
@@ -57,6 +73,9 @@ export default function SignInPage() {
         if (cred) {
           cred?.getIdToken().then((token) => {
             console.log(token);
+            validateUserJWTToken(token).then((data) => {
+              console.log("data " + JSON.stringify(data, null, 2));
+            });
           });
         }
       });
@@ -133,6 +152,7 @@ export default function SignInPage() {
           </div>
         </CardContent>
       </Card>
+      <Toaster />
     </div>
   );
 }
