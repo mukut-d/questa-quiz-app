@@ -14,8 +14,13 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { toast } from "sonner";
+import { app } from "@/config/firebase.config";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import Image from "next/image";
 
 export default function SignInPage() {
+  const firebaseAuth = getAuth(app);
+  const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +49,18 @@ export default function SignInPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const loginWithGoogleHandler = async () => {
+    await signInWithPopup(firebaseAuth, provider).then((userCred) => {
+      firebaseAuth.onAuthStateChanged((cred) => {
+        if (cred) {
+          cred?.getIdToken().then((token) => {
+            console.log(token);
+          });
+        }
+      });
+    });
   };
 
   return (
@@ -77,6 +94,21 @@ export default function SignInPage() {
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
           </form>
+          <div className="flex justify-center">
+            <span className="py-2 text-md">Login With</span>
+            <Button
+              onClick={loginWithGoogleHandler}
+              type="submit"
+              disabled={isLoading}
+            >
+              <Image
+                src={"/google.png"}
+                width={30}
+                height={30}
+                alt="Google Logo"
+              />
+            </Button>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

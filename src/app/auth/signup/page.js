@@ -13,8 +13,14 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { toast } from "sonner";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { app } from "@/config/firebase.config";
+import Image from "next/image";
 
 export default function SignUpPage() {
+  const firebaseAuth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -74,6 +80,20 @@ export default function SignUpPage() {
     }
   };
 
+  const loginWithGoogleHandler = async () => {
+    await signInWithPopup(firebaseAuth, provider).then((userCred) => {
+      firebaseAuth.onAuthStateChanged((cred) => {
+        if (cred) {
+          cred?.getIdToken().then((token) => {
+            console.log(token);
+          });
+        }
+      });
+    });
+  };
+
+  const loginWithEmailHandler = () => {};
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -125,9 +145,29 @@ export default function SignUpPage() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              onClick={loginWithEmailHandler}
+              type="submit"
+              className="w-full"
+              disabled={isLoading}
+            >
               {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
+            <div className="flex justify-center">
+              <span className="py-2 text-md">Login With</span>
+              <Button
+                onClick={loginWithGoogleHandler}
+                type="submit"
+                disabled={isLoading}
+              >
+                <Image
+                  src={"/google.png"}
+                  width={30}
+                  height={30}
+                  alt="Google Logo"
+                />
+              </Button>
+            </div>
           </form>
 
           <div className="mt-6 text-center">
