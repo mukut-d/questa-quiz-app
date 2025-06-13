@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -13,10 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { Plus, Trash2, Save } from "lucide-react";
-import { toast } from "sonner";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function CreateQuizPage() {
-  const { data: session } = useSession();
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -37,6 +35,8 @@ export default function CreateQuizPage() {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log(JSON.stringify(questions, null, 2));
 
   const addQuestion = () => {
     const newQuestion = {
@@ -117,7 +117,7 @@ export default function CreateQuizPage() {
     }
 
     try {
-      const response = await fetch("/api/quizzes", {
+      const response = await fetch("/api/quizes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,18 +142,6 @@ export default function CreateQuizPage() {
       setIsLoading(false);
     }
   };
-
-  if (!session) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card>
-          <CardContent className="p-8">
-            <p>Please sign in to create quizzes.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -304,6 +292,7 @@ export default function CreateQuizPage() {
           </div>
         </form>
       </div>
+      <Toaster />
     </div>
   );
 }

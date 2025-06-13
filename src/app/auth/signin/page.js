@@ -22,6 +22,7 @@ import {
 } from "firebase/auth";
 import Image from "next/image";
 import { validateUserJWTToken } from "@/utils/validateUser";
+import { useStore } from "zustand";
 
 export default function SignInPage() {
   const firebaseAuth = getAuth(app);
@@ -30,6 +31,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { setUID } = useStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,9 +53,15 @@ export default function SignInPage() {
           firebaseAuth.onAuthStateChanged((cred) => {
             if (cred) {
               cred?.getIdToken().then((token) => {
-                console.log(token);
                 validateUserJWTToken(token).then((data) => {
                   console.log("data " + JSON.stringify(data, null, 2));
+                  if (!data?.uid) {
+                    toast.error("User is not valid");
+                    return;
+                  }
+
+                  setUID(data?.uid);
+                  router.push("/");
                 });
               });
             }
@@ -75,6 +83,13 @@ export default function SignInPage() {
             console.log(token);
             validateUserJWTToken(token).then((data) => {
               console.log("data " + JSON.stringify(data, null, 2));
+              if (!data?.uid) {
+                toast.error("User is not valid");
+                return;
+              }
+
+              setUID(data?.uid);
+              router.push("/");
             });
           });
         }

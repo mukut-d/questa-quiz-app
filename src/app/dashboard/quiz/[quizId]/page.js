@@ -13,23 +13,25 @@ import {
 } from "@/components/ui/Card";
 import { Plus, Eye, Share2, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
+import userStore from "@/store/userStore";
 
 export default function DashboardPage() {
-  const { data: session } = useSession();
+  const { uid } = userStore();
   const [quizzes, setQuizzes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (session) {
+    if (!uid) {
       fetchQuizzes();
     }
-  }, [session]);
+  }, [uid]);
 
   const fetchQuizzes = async () => {
     try {
-      const response = await fetch("/api/quizzes");
+      const response = await fetch("/api/quizes");
       if (response.ok) {
         const data = await response.json();
+        console.log("data " + JSON.stringify(data, null, 2));
         setQuizzes(data);
       }
     } catch (error) {
@@ -45,7 +47,7 @@ export default function DashboardPage() {
     toast.success("Quiz link copied to clipboard!");
   };
 
-  if (!session) {
+  if (uid) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Card>
@@ -65,9 +67,7 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-              <p className="text-gray-600">
-                Welcome back, {session.user?.name}!
-              </p>
+              <p className="text-gray-600">Welcome back, Mukut!</p>
             </div>
             <Button asChild>
               <Link href="/create">

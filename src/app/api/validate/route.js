@@ -5,8 +5,6 @@ import admin from "@/lib/firebase-admin"; // or your Firebase admin init
 export async function GET(req) {
   const authHeader = req.headers.get("authorization");
 
-  console.log("authheader " + authHeader);
-
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ msg: "Token not found" }, { status: 401 });
   }

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button.js";
 import {
@@ -8,8 +9,26 @@ import {
   CardTitle,
 } from "@/components/ui/Card.js";
 import { PlusCircle, Share2, BarChart3, Shield } from "lucide-react";
+import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
+import userStore from "./store/userStore";
 
 export default function HomePage() {
+  const router = useRouter();
+  const { uid } = userStore();
+  const handleCreateQuiz = (e) => {
+    e.preventDefault();
+    console.log("executed");
+
+    if (uid) {
+      toast.error("User needs to Login First !");
+
+      router.push("/auth/signin");
+    } else {
+      router.push("/create");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Navigation */}
@@ -23,10 +42,14 @@ export default function HomePage() {
             </div>
             <div className="flex space-x-4">
               <Button variant="outline" asChild>
-                <Link href="/auth/signin">Sign In</Link>
+                <Link href="/auth/signin" className="hover:bg-sky-600">
+                  Sign In
+                </Link>
               </Button>
               <Button asChild>
-                <Link href="/auth/signup">Get Started</Link>
+                <Link href="/auth/signup" className="hover:bg-sky-600">
+                  Get Started
+                </Link>
               </Button>
             </div>
           </div>
@@ -47,15 +70,23 @@ export default function HomePage() {
             Perfect for educators, trainers, and anyone who loves to create
             interactive content.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col cursor-pointer  sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <Link href="/auth/signup">
+              <Link
+                href="/"
+                className="hover:bg-sky-600"
+                onClick={(e) => {
+                  handleCreateQuiz(e);
+                }}
+              >
                 <PlusCircle className="mr-2 h-5 w-5" />
                 Create Your First Quiz
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/quiz/demo">Try Demo Quiz</Link>
+              <Link href="/quiz/demo" className="hover:bg-sky-600">
+                Try Demo Quiz
+              </Link>
             </Button>
           </div>
         </div>
@@ -126,7 +157,7 @@ export default function HomePage() {
                 href="https://github.com/mukut-d"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 hover:bg-sky-600 p-2"
               >
                 GitHub
               </a>
@@ -134,7 +165,7 @@ export default function HomePage() {
                 href="https://www.linkedin.com/in/mukut-das/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 hover:bg-sky-600 p-2"
               >
                 LinkedIn
               </a>
@@ -142,6 +173,7 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+      <Toaster />
     </div>
   );
 }

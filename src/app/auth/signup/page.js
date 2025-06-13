@@ -82,9 +82,15 @@ export default function SignUpPage() {
         firebaseAuth.onAuthStateChanged((cred) => {
           if (cred) {
             cred?.getIdToken().then((token) => {
-              console.log(token);
               validateUserJWTToken(token).then((data) => {
                 console.log("data " + JSON.stringify(data, null, 2));
+                if (!data?.uid) {
+                  toast.error("User is not valid");
+                  return;
+                }
+
+                setUID(data?.uid);
+                router.push("/");
               });
             });
           }
