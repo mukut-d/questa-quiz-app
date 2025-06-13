@@ -57,7 +57,7 @@ export default function ResponsesPage() {
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
-      <h1 className="text-3xl font-bold mb-2">Responses for "{quiz.title}"</h1>
+      <h1 className="text-3xl font-bold mb-2">{`Responses for ${quiz.title}`}</h1>
       <p className="text-gray-600 mb-6">{responses.length} total submissions</p>
       {responses.length === 0 ? (
         <div className="text-gray-500">No responses yet.</div>
