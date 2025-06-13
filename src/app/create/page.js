@@ -132,7 +132,7 @@ export default function CreateQuizPage() {
       if (response.ok) {
         const quiz = await response.json();
         toast.success("Quiz created successfully!");
-        router.push(`/dashboard/quiz/${quiz._id}`);
+        router.push(`/quiz/${quiz._id}`);
       } else {
         toast.error("Failed to create quiz");
       }
@@ -141,6 +141,10 @@ export default function CreateQuizPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const goBackHandler = () => {
+    router.push("/");
   };
 
   return (
@@ -285,7 +289,19 @@ export default function CreateQuizPage() {
 
           {/* Submit Button */}
           <div className="flex justify-end">
-            <Button type="submit" disabled={isLoading} size="lg">
+            <Button
+              onClick={goBackHandler}
+              size="lg"
+              className="hover:bg-blue-400 hover:text-white"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              size="lg"
+              className="hover:bg-blue-400 hover:text-white"
+            >
               <Save className="h-4 w-4 mr-2" />
               {isLoading ? "Creating Quiz..." : "Create Quiz"}
             </Button>

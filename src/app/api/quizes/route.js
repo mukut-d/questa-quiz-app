@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { ObjectId } from "mongodb";
-
-// Helper to generate a short readable ID (customizable)
-function generateQuizId() {
-  return `quiz_${Math.random().toString(36).substr(2, 9)}`;
-}
 
 export async function POST(req) {
   try {
@@ -21,10 +15,7 @@ export async function POST(req) {
 
     const { db } = await connectToDatabase();
 
-    const quizId = generateQuizId();
-
     const newQuiz = {
-      quizId, // ✅ custom quizId
       title,
       description,
       questions,
@@ -36,8 +27,7 @@ export async function POST(req) {
     return NextResponse.json(
       {
         message: "Quiz created",
-        _id: result.insertedId,
-        quizId, // ✅ return it in response
+        _id: result.insertedId, // ✅ this is the ObjectId
       },
       { status: 201 }
     );
@@ -52,7 +42,6 @@ export async function GET() {
     const { db } = await connectToDatabase();
 
     const quizzes = await db.collection("quizzes").find().toArray();
-    console.log(JSON.stringify(quizzes, null, 2));
 
     return NextResponse.json(quizzes, { status: 200 });
   } catch (error) {

@@ -15,18 +15,22 @@ import userStore from "./store/userStore";
 
 export default function HomePage() {
   const router = useRouter();
-  const { uid } = userStore();
+  const { uid, clearIUD } = userStore();
   const handleCreateQuiz = (e) => {
     e.preventDefault();
     console.log("executed");
 
-    if (uid) {
+    if (!uid) {
       toast.error("User needs to Login First !");
 
       router.push("/auth/signin");
     } else {
       router.push("/create");
     }
+  };
+
+  const signOutHandler = () => {
+    clearIUD();
   };
 
   return (
@@ -41,13 +45,29 @@ export default function HomePage() {
               </h1>
             </div>
             <div className="flex space-x-4">
-              <Button variant="outline" asChild>
-                <Link href="/auth/signin" className="hover:bg-sky-600">
-                  Sign In
-                </Link>
-              </Button>
+              {!uid && (
+                <Button variant="outline" asChild>
+                  <Link
+                    href="/auth/signin"
+                    className="hover:bg-sky-600 hover:text-white"
+                  >
+                    Sign In
+                  </Link>
+                </Button>
+              )}
+              {uid && (
+                <Button variant="outline" asChild>
+                  <Link
+                    href={"/"}
+                    onClick={signOutHandler}
+                    className="hover:bg-sky-600 hover:text-white"
+                  >
+                    Sign Out
+                  </Link>
+                </Button>
+              )}
               <Button asChild>
-                <Link href="/auth/signup" className="hover:bg-sky-600">
+                <Link href="/" className="hover:bg-sky-600 hover:text-white">
                   Get Started
                 </Link>
               </Button>
@@ -74,7 +94,7 @@ export default function HomePage() {
             <Button size="lg" asChild>
               <Link
                 href="/"
-                className="hover:bg-sky-600"
+                className="hover:bg-sky-600 hover:text-white"
                 onClick={(e) => {
                   handleCreateQuiz(e);
                 }}
@@ -84,8 +104,11 @@ export default function HomePage() {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/quiz/demo" className="hover:bg-sky-600">
-                Try Demo Quiz
+              <Link
+                href="/dashboard"
+                className="hover:bg-sky-600 hover:text-white"
+              >
+                View Quizzes
               </Link>
             </Button>
           </div>

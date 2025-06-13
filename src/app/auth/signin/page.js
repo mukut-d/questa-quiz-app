@@ -22,7 +22,7 @@ import {
 } from "firebase/auth";
 import Image from "next/image";
 import { validateUserJWTToken } from "@/utils/validateUser";
-import { useStore } from "zustand";
+import userStore from "@/store/userStore";
 
 export default function SignInPage() {
   const firebaseAuth = getAuth(app);
@@ -31,7 +31,7 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { setUID } = useStore();
+  const { setUID } = userStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -153,16 +153,6 @@ export default function SignInPage() {
               >
                 Sign up
               </Link>
-            </p>
-          </div>
-
-          <div className="mt-4 p-3 bg-gray-50 rounded-md">
-            <p className="text-xs text-gray-600 text-center">
-              <strong>Demo Account:</strong>
-              <br />
-              Email: demo@questa.com
-              <br />
-              Password: demo123456
             </p>
           </div>
         </CardContent>

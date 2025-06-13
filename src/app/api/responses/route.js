@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 
 export async function POST(req) {
+  console.log("executed");
   try {
     const body = await req.json();
 
     const { quizId, answers } = body;
+    console.log("quiz id " + quizId);
 
     if (!quizId || !answers || typeof answers !== "object") {
       return NextResponse.json(
