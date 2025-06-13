@@ -1,28 +1,30 @@
 # 📚 Questa – Quiz Creation & Sharing Platform
 
-Questa is a fullstack quiz application that enables authenticated users to create, manage, and share quizzes publicly. Anyone with the link can respond to a quiz without authentication, while creators can view and analyze submissions securely.
+[![Vercel Deployment](https://img.shields.io/badge/Deployed%20on-Vercel-000?logo=vercel&logoColor=white)](https://questa-quiz-hmv8gysiy-mukut-ds-projects.vercel.app/dashboard)
 
----
-
-## 🎯 Objective
-
-Build and deploy a secure, full-featured quiz platform that demonstrates foundational fullstack skills including:
-
-- API development
-- Authentication
-- Database integration
-- Deployment
+**Questa** is a fullstack quiz application that enables authenticated users to create, manage, and analyze quizzes. Quizzes can be shared publicly, and anyone with the link can respond—no login required!
 
 ---
 
 ## 🚀 Live Demo
 
-🔗 [Visit Live App](https://your-live-link.vercel.app)
+🔗 [Visit Live App](https://questa-quiz-hmv8gysiy-mukut-ds-projects.vercel.app/dashboard)
 
-> 🧪 Use these sample credentials to test:
+> 🧪 **Sample Login Credentials**
 >
 > - Email: `demo@questa.com`
 > - Password: `questa123`
+
+---
+
+## 🎯 Objective
+
+To build and deploy a modern, secure, and full-featured quiz platform showcasing:
+
+- End-to-end fullstack development
+- Authentication and public access control
+- Robust API routes and DB operations
+- Deployment with environment separation
 
 ---
 
@@ -31,70 +33,76 @@ Build and deploy a secure, full-featured quiz platform that demonstrates foundat
 | Category   | Stack                   |
 | ---------- | ----------------------- |
 | Framework  | Next.js 15 (App Router) |
-| Language   | Javascript              |
+| Language   | JavaScript              |
 | Styling    | Tailwind CSS v4         |
-| Database   | Mongodb                 |
-| ORM        | Prisma                  |
-| Auth       | Firebase                |
+| Database   | MongoDB Atlas           |
+| Auth       | Firebase Authentication |
 | Deployment | Vercel                  |
 
 ---
 
 ## 🔐 Authentication
 
-- Email-based signup & login
-- Persistent sessions
-- UI updates dynamically based on auth state
-- Only authenticated users can create or view their quizzes
-- Public users can view and respond to shared quizzes
+- Firebase-based email/password auth
+- Persistent sessions using client-side state
+- Auth-based route protection
+- Only logged-in users can create/view quizzes
+- Public quizzes require no login to attempt
 
 ---
 
 ## ⚙️ Core Features
 
-### ✅ Authenticated User Actions
+### 👤 For Authenticated Users
 
-- Create a quiz with a title and at least 2 questions:
-  - Single-choice (radio buttons)
-  - Short text input
-- View quiz via generated public link
-- View all responses submitted to their quizzes
+- Create quizzes with:
+  - Short-text questions
+  - Multiple-choice options
+- View quiz dashboard
+- Access shareable public quiz link
+- View and analyze all quiz submissions
 
-### 🌍 Public User Actions
+### 🌍 For Public Users
 
-- Access quizzes via `/quiz/[id]`
-- Submit responses without logging in
-- Answers are stored securely in the database
+- Access quiz via unique URL
+- Attempt quiz without logging in
+- Responses saved securely in MongoDB
 
 ---
 
-## 🧱 Backend API Endpoints
+## 🔄 API Endpoints
 
 | Route                      | Method | Description                             |
 | -------------------------- | ------ | --------------------------------------- |
 | `/api/quizzes`             | POST   | Create a new quiz                       |
-| `/api/quizzes/[id]`        | GET    | Fetch a public quiz                     |
-| `/api/quizzes/[id]/submit` | POST   | Submit a quiz response                  |
-| `/api/user/quizzes`        | GET    | Fetch quizzes created by logged-in user |
+| `/api/quizzes/[id]`        | GET    | Get a specific quiz                     |
+| `/api/responses`           | POST   | Submit answers to a quiz                |
 | `/api/quiz/[id]/responses` | GET    | Get all responses for a quiz            |
+| `/api/quiz/[id]/combined`  | GET    | Fetch quiz and its associated responses |
 
-> Built using **Next.js Route Handlers (App Router)** and securely connected to PostgreSQL via Prisma.
+> All routes built using **Next.js Route Handlers** and MongoDB integration
 
 ---
 
-## 🖥️ Screenshots
+## 🖼️ Screenshots
 
 <!-- Add screenshots here -->
-<!-- ![Homepage](./public/screenshots/homepage.png) -->
+<!-- ![Dashboard](./public/screenshots/dashboard.png) -->
+<!-- ![Quiz View](./public/screenshots/quiz_view.png) -->
 
 ---
 
-## 📦 Setup Instructions
+## 🧪 Local Development Setup
 
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/yourusername/questa.git
-   cd questa
-   npm install
-   npm run dev
-   ```
+```bash
+git clone https://github.com/yourusername/questa.git
+cd questa
+
+# Install dependencies
+npm install
+
+# Create a .env.local and add Firebase + MongoDB config
+
+# Run the app
+npm run dev
+```
