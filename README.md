@@ -88,9 +88,20 @@ To build and deploy a modern, secure, and full-featured quiz platform showcasing
 
 <!-- Add screenshots here -->
 
+### 🏠 Home Page
+
 ![Home](./public/ss1.png)
+
+### 🔐 Login Page
+
 ![Login](./public/ss2.png)
+
+### 📊 Dashboard
+
 ![Dashboard](./public/ss3.png)
+
+### 📝 Quiz View
+
 ![Quiz](./public/ss4.png)
 
 ---
